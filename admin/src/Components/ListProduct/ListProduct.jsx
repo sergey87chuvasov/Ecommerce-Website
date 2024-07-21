@@ -17,6 +17,18 @@ const ListProduct = () => {
     fetchInfo();
   }, []);
 
+  const remove_product = async (id) => {
+    await fetch('http://localhost:4000/removeproduct', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: id }),
+    });
+    await fetchInfo();
+  };
+
   return (
     <div className='list-product'>
       <h1>All Products List</h1>
@@ -32,25 +44,31 @@ const ListProduct = () => {
         <hr />
         {allproducts.map((product, index) => {
           return (
-            <div
-              key={index}
-              className='listproduct-format-main listproduct-format'
-            >
-              <img
-                className='listproduct-product-item'
-                src={product.image}
-                alt='img pic'
-              />
-              <p>{product.name}</p>
-              <p>${product.old_price}</p>
-              <p>${product.new_price}</p>
-              <p>{product.category}</p>
-              <img
-                className='listproduct-remove-icon'
-                src={cross_icon}
-                alt='img pic'
-              />
-            </div>
+            <>
+              <div
+                key={index}
+                className='listproduct-format-main listproduct-format'
+              >
+                <img
+                  className='listproduct-product-icon'
+                  src={product.image}
+                  alt='img pic'
+                />
+                <p>{product.name}</p>
+                <p>${product.old_price}</p>
+                <p>${product.new_price}</p>
+                <p>{product.category}</p>
+                <img
+                  onClick={() => {
+                    remove_product(product.id);
+                  }}
+                  className='listproduct-remove-icon'
+                  src={cross_icon}
+                  alt='img pic'
+                />
+              </div>
+              <hr />
+            </>
           );
         })}
       </div>
