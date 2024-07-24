@@ -223,6 +223,7 @@ const fetchUser = async (req, res, next) => {
 
 // create andpoint for add products in cart
 app.post('/addtocart', fetchUser, async (req, res) => {
+  console.log('Added', req.body.itemId);
   let userData = await Users.findOne({ _id: req.user.id });
   userData.cartData[req.body.itemId] += 1;
 
@@ -232,6 +233,29 @@ app.post('/addtocart', fetchUser, async (req, res) => {
   );
 
   res.send('Added');
+});
+
+// creat andpoint to remove product from cart data
+app.post('/removefromcart', fetchUser, async (req, res) => {
+  console.log('removed', req.body.itemId);
+  let userData = await Users.findOne({ _id: req.user.id });
+  if (userData.cartData[req.body.itemId] > 0)
+    userData.cartData[req.body.itemId] -= 1;
+
+  await Users.findOneAndUpdate(
+    { _id: req.user.id },
+    { cartData: userData.cartData }
+  );
+
+  res.send('Remove');
+});
+
+// create andpoint to get cart data
+app.post('/getcart', fetchUser, async (req, res) => {
+  console.log('Get Cart');
+
+  let userData = await Users.findOne({ _id: req.user.id });
+  res.json(userData.cartData);
 });
 
 app.listen(port, (error) => {
