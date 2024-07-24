@@ -22,8 +22,6 @@ const AddProduct = () => {
   };
 
   const AddProduct = async () => {
-    // console.log(productDetails);
-
     let responseData;
     let product = productDetails;
 
@@ -44,7 +42,6 @@ const AddProduct = () => {
 
     if (responseData.success) {
       product.image = responseData.image_url;
-      // console.log(product);
       await fetch('http://localhost:4000/addproduct', {
         method: 'POST',
         headers: {
